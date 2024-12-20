@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>a.Ilyas Abukar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    /* Background Gradient */
+    .bg-calm {
+      background: linear-gradient(to bottom, #eef2f3, #8e9eab);
+      background-attachment: fixed; /* Adds subtle depth */
+    }
+
+    /* Navigation Link Hover Effect */
+    .nav-link:hover {
+      text-decoration: underline;
+      text-decoration-color: #5CDB95; /* Calming mint */
+      text-decoration-thickness: 2px;
+      transition: text-decoration 0.3s ease-in-out;
+    }
+
+    /* Quote Container Styling */
+    .quote-container {
+      background-color: rgba(255, 255, 255, 0.85); /* Softer white */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      border-radius: 0.5rem;
+    }
+
+    /* Hero Section Gradient Overlay */
+    .hero-gradient::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="bg-calm font-montserrat text-gray-900 dark:text-gray-100">
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-md">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <h1 class="text-xl font-bold text-gray-800 dark:text-gray-200">a.Ilyas Abukar</h1>
+      <button id="themeToggle" class="text-2xl hover:scale-110 transition">🌙</button>
+      <ul class="hidden md:flex gap-8 text-lg font-semibold">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#writing" class="nav-link">Writing</a></li>
+        <li><a href="#photography" class="nav-link">Photography</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative flex justify-center items-center h-[calc(100vh-80px)] mt-[80px] px-5">
+    <!-- Hero Image -->
+    <img src="https://www.ilyasabukar.com/spashhero.svg" alt="Hero Image" class="absolute inset-0 w-full h-full object-cover hero-gradient">
+
+    <!-- Quote Container -->
+    <div id="quoteContainer" class="relative z-10 text-gray-800 dark:text-gray-100 p-8 rounded-lg shadow-lg max-w-xl transition-opacity opacity-0 quote-container">
+      <p id="quoteText" class="text-3xl md:text-4xl font-medium italic leading-relaxed tracking-wide mb-6"></p>
+      <div class="border-t border-gray-400/50 my-4"></div>
+      <p id="quoteAuthor" class="text-right text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light"></p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 dark:bg-gray-900 text-center py-6 mt-8">
+    <p class="text-gray-700 dark:text-gray-300">© 2024 a.Ilyas Abukar. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const theme = html.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+    });
+
+    if (localStorage.getItem('theme') === 'dark') {
+      html.classList.add('dark');
+    }
+
+    // Quotes (No Typewriter Effect)
+    const quotes = [
+      { text: "Love itself, the subversive gift, is an important public good, and loving is a significant political act.", author: "- Richard Iton" },
+      { text: "...respect black noise—the shrieks, the moans, the nonsense, and the opacity, which are always in excess of legibility and of the law.", author: "- Saidiya Hartman" },
+      { text: "I'm like Carrie Bradshaw with a back brace on.", author: "- Doechii" }
+    ];
+
+    let currentIndex = 0;
+    const quoteText = document.getElementById('quoteText');
+    const quoteAuthor = document.getElementById('quoteAuthor');
+    const quoteContainer = document.getElementById('quoteContainer');
+
+    function displayQuote(quote) {
+      quoteText.textContent = quote.text;
+      quoteAuthor.textContent = quote.author;
+    }
+
+    function changeQuote() {
+      gsap.to(quoteContainer, {
+        opacity: 0,
+        y: -20,
+        duration: 1,
+        onComplete: () => {
+          currentIndex = (currentIndex + 1) % quotes.length;
+          displayQuote(quotes[currentIndex]);
+          gsap.to(quoteContainer, {
+            opacity: 1,
+            y: 0,
+            duration: 1
+          });
+        }
+      });
+    }
+
+    displayQuote(quotes[currentIndex]);
+    setInterval(changeQuote, 12000);
+  </script>
+</body>
+</html>
